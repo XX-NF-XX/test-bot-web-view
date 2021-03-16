@@ -3,8 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Enter Captcha</title>
   <link rel="icon" type="image/x-icon" href="https://vt-lp.github.io/test-bot-web-view/favicon.ico"/>
+  <title>Enter Captcha</title>
+
   <!-- BEGIN LivePerson Monitor. -->
   <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
@@ -16,7 +17,7 @@
   <!-- END LivePerson Monitor. -->
 
   <script type="text/javascript">
-    // Post data to Web View API
+    // Post to Web View API
     async function postData(url = '', auth, data = {}) {
       const response = await fetch(url, {
         method: 'POST',
@@ -30,7 +31,7 @@
       return await response.json();
     };
 
-    // method to sha256 encode string
+    // Encode to sha256
     async function sha256(message) {
       const msgBuffer = new TextEncoder('utf-8').encode(message);
       const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -39,7 +40,9 @@
     }
 
     // Post data when form is submitted
-    submitForm = async function() {
+    async function submitForm() {
+      const domain = 'https://va.bc-intg.liveperson.net/thirdparty-services-0.1/webview';
+
       // Get data from query string
       const queryParams = new URLSearchParams(document.location.search);
       const userId = queryParams.get('userId');
@@ -47,10 +50,7 @@
       const botId = queryParams.get('botId');
 
       // Get data from form
-      const code = document.querySelector('input[name="captcha_code"]').value;
-
-      // use correct domain for your region
-      const domain = 'https://va.bc-intg.liveperson.net/thirdparty-services-0.1/webview';
+      const code = document.querySelector('input[id="captchaCode"]').value;
       
       // encode auth string
       const authString = `${conversationId} || ${botId}`;
@@ -60,23 +60,31 @@
         botId,
         conversationId,
         userId,
-        message: "request successful", // optional
-        contextVariables: [{"name": "code", "value": code}],
+        message: 'request successful',
+        contextVariables: [{ name: 'code', value: code }],
       });
+    }
 
-      window.close();
+    async function onBodyLoad() {
+      // Add captcha image
+      const timestamp = Date.now();
+      const image = document.createElement('img');
+      image.src = `https://www.optimum.net/api/user/services/v1/user/password_reset/kaptcha_image?c=${timestamp}`
+
+      const container = document.querySelector('div[id="captchaImageContainer"]');
+      container.appendChild(image);
     }
   </script>
 </head>
 
-<body>
-  <img src="https://www.optimum.net/api/user/services/v1/user/password_reset/kaptcha_image?c=1615827263200" alt="Captcha image">
-  <form method="post">
+<body onload="onBodyLoad()">
+  <div id="captchaImageContainer"></div>
+  <form onsubmit="submitForm(); return false;">
     <div>
-      <label for="code">Type the text</label> <input type="text" id="code" name="captcha_code">
+      <label for="code">Type the text</label> <input type="text" id="captchaCode">
     </div>
-    <div class="button">
-      <button type="button" onclick="submitForm()">Send</button>
+    <div>
+      <input type="submit">
     </div>
   </form>
 </body>
