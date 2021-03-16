@@ -63,6 +63,8 @@
         message: 'request successful',
         contextVariables: [{ name: 'code', value: code }],
       });
+
+      window.close();
     }
 
     async function onBodyLoad() {
@@ -70,19 +72,33 @@
       const timestamp = Date.now();
       const image = document.createElement('img');
       image.src = `https://www.optimum.net/api/user/services/v1/user/password_reset/kaptcha_image?c=${timestamp}`
+      image.id = 'captchaImage';
 
       const container = document.querySelector('div[id="captchaImageContainer"]');
-      container.appendChild(image);
+      container.prepend(image);
+    }
+
+    async function reloadCaptchaImage() {
+      const timestamp = Date.now();
+      const image = document.querySelector('img[id="captchaImage"]');
+      image.src = `https://www.optimum.net/api/user/services/v1/user/password_reset/kaptcha_image?c=${timestamp}`
     }
   </script>
 </head>
 
 <body onload="onBodyLoad()">
-  <div id="captchaImageContainer"></div>
+  <div>
+    <h3>Enter the code below</h3>
+  </div>
+  <div id="captchaImageContainer" style="display: flex; flex-wrap: wrap; justify-content: left;">
+    <button style="border: none; background-color: inherit; display: inline-block; font-size:200%;" onclick="reloadCaptchaImage();">&#8635;</button>
+  </div>
+  <br>
   <form onsubmit="submitForm(); return false;">
     <div>
-      <label for="code">Type the text</label> <input type="text" id="captchaCode">
+      <input type="text" id="captchaCode" maxlength="8">
     </div>
+    <br>
     <div>
       <input type="submit">
     </div>
