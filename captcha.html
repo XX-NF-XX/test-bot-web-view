@@ -18,6 +18,7 @@
 
   <script type="text/javascript">
     const abcRedirectUri = 'https://bcrw.apple.com/urn:biz:';
+    const gbmRedirectUri = 'https://business.google.com/message?args=';
 
     // Post to Web View API
     async function postData(url = '', auth, data = {}) {
@@ -51,6 +52,7 @@
       const conversationId = queryParams.get('convId');
       const botId = queryParams.get('botId');
       const abcBID = urlParams.get('abcBID');
+      const gbmId = urlParams.get('gbmId');
 
       // Get data from form
       const code = document.querySelector('input[id="captchaCode"]').value;
@@ -69,6 +71,8 @@
 
       if (abcBID) {
         window.location.href = `${abcRedirectUri}${abcBID}`;
+      } else if (gbmId) {
+        window.location.href = `${gbmRedirectUri}${gbmId}`;
       } else {
         window.close();
       }
