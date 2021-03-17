@@ -17,6 +17,8 @@
   <!-- END LivePerson Monitor. -->
 
   <script type="text/javascript">
+    const abcRedirectUri = 'https://bcrw.apple.com/urn:biz:';
+
     // Post to Web View API
     async function postData(url = '', auth, data = {}) {
       const response = await fetch(url, {
@@ -48,6 +50,7 @@
       const userId = queryParams.get('userId');
       const conversationId = queryParams.get('convId');
       const botId = queryParams.get('botId');
+      const abcBID = urlParams.get('abcBID');
 
       // Get data from form
       const code = document.querySelector('input[id="captchaCode"]').value;
@@ -64,7 +67,11 @@
         contextVariables: [{ name: 'code', value: code }],
       });
 
-      window.close();
+      if (abcBID) {
+        window.location.href = `${abcRedirectUri}${abcBID}`;
+      } else {
+        window.close();
+      }
     }
 
     async function onBodyLoad() {
