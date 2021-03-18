@@ -3,22 +3,97 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/x-icon" href="https://vt-lp.github.io/test-bot-web-view/favicon.ico"/>
+  <link rel="icon" type="image/x-icon" href="https://vt-lp.github.io/test-bot-web-view/favicon.ico" />
   <title>Enter Captcha</title>
 
-  <!-- BEGIN LivePerson Monitor. -->
+  <!-- LivePerson Monitor.
   <script type="text/javascript">
     const urlParams = new URLSearchParams(window.location.search);
     const site = urlParams.get('account');
     if (site) {
-      window.lpTag = window.lpTag || {}, 'undefined' == typeof window.lpTag._tagCount ? (window.lpTag = { wl: lpTag.wl || null, scp: lpTag.scp || null, site: site || '', section: lpTag.section || '', tagletSection: lpTag.tagletSection || null, autoStart: lpTag.autoStart !== !1, ovr: lpTag.ovr || {}, _v: '1.10.0', _tagCount: 1, protocol: 'https:', events: { bind: function (t, e, i) { lpTag.defer(function () { lpTag.events.bind(t, e, i) }, 0) }, trigger: function (t, e, i) { lpTag.defer(function () { lpTag.events.trigger(t, e, i) }, 1) } }, defer: function (t, e) { 0 === e ? (this._defB = this._defB || [], this._defB.push(t)) : 1 === e ? (this._defT = this._defT || [], this._defT.push(t)) : (this._defL = this._defL || [], this._defL.push(t)) }, load: function (t, e, i) { var n = this; setTimeout(function () { n._load(t, e, i) }, 0) }, _load: function (t, e, i) { var n = t; t || (n = this.protocol + '//' + (this.ovr && this.ovr.domain ? this.ovr.domain : 'lptag.liveperson.net') + '/tag/tag.js?site=' + this.site); var o = document.createElement('script'); o.setAttribute('charset', e ? e : 'UTF-8'), i && o.setAttribute('id', i), o.setAttribute('src', n), document.getElementsByTagName('head').item(0).appendChild(o) }, init: function () { this._timing = this._timing || {}, this._timing.start = (new Date).getTime(); var t = this; window.attachEvent ? window.attachEvent('onload', function () { t._domReady('domReady') }) : (window.addEventListener('DOMContentLoaded', function () { t._domReady('contReady') }, !1), window.addEventListener('load', function () { t._domReady('domReady') }, !1)), 'undefined' === typeof window._lptStop && this.load() }, start: function () { this.autoStart = !0 }, _domReady: function (t) { this.isDom || (this.isDom = !0, this.events.trigger('LPT', 'DOM_READY', { t: t })), this._timing[t] = (new Date).getTime() }, vars: lpTag.vars || [], dbs: lpTag.dbs || [], ctn: lpTag.ctn || [], sdes: lpTag.sdes || [], hooks: lpTag.hooks || [], identities: lpTag.identities || [], ev: lpTag.ev || [] }, lpTag.init()) : window.lpTag._tagCount += 1;
+      window.lpTag = window.lpTag || {};
+      console.log(lpTag.autoStart);
+      'undefined' == typeof window.lpTag._tagCount ? (
+        window.lpTag = {
+          wl: lpTag.wl || null,
+          scp: lpTag.scp || null,
+          site: site || '',
+          section: lpTag.section || '',
+          tagletSection: lpTag.tagletSection || null,
+          autoStart: lpTag.autoStart !== !1,
+          ovr: lpTag.ovr || {}, _v: '1.10.0',
+          _tagCount: 1,
+          protocol: 'https:',
+          events: {
+            bind: function (t, e, i) { lpTag.defer(function () { lpTag.events.bind(t, e, i) }, 0) },
+            trigger: function (t, e, i) { lpTag.defer(function () { lpTag.events.trigger(t, e, i) }, 1) } },
+            defer: function (t, e) { 0 === e ? (this._defB = this._defB || [], this._defB.push(t)) : 1 === e ? (this._defT = this._defT || [], this._defT.push(t)) : (this._defL = this._defL || [], this._defL.push(t)) },
+            load: function (t, e, i) { var n = this; setTimeout(function () { n._load(t, e, i) }, 0) },
+            _load: function (t, e, i) { var n = t; t || (n = this.protocol + '//' + (this.ovr && this.ovr.domain ? this.ovr.domain : 'lptag.liveperson.net') + '/tag/tag.js?site=' + this.site); var o = document.createElement('script'); o.setAttribute('charset', e ? e : 'UTF-8'), i && o.setAttribute('id', i), o.setAttribute('src', n), document.getElementsByTagName('head').item(0).appendChild(o) },
+            init: function () { this._timing = this._timing || {}, this._timing.start = (new Date).getTime(); var t = this; window.attachEvent ? window.attachEvent('onload', function () { t._domReady('domReady') }) : (window.addEventListener('DOMContentLoaded', function () { t._domReady('contReady') }, !1), window.addEventListener('load', function () { t._domReady('domReady') }, !1)), 'undefined' === typeof window._lptStop && this.load() },
+            start: function () { this.autoStart = !0 },
+            _domReady: function (t) { this.isDom || (this.isDom = !0, this.events.trigger('LPT', 'DOM_READY', { t: t })), this._timing[t] = (new Date).getTime() },
+            vars: lpTag.vars || [], dbs: lpTag.dbs || [], ctn: lpTag.ctn || [], sdes: lpTag.sdes || [], hooks: lpTag.hooks || [], identities: lpTag.identities || [], ev: lpTag.ev || []
+        }, lpTag.init()
+      ) : window.lpTag._tagCount += 1;
+    }
+  </script>-->
+
+  <!-- Engagement Window Widget SDK. -->
+  <script src=https://lpcdn.lpsnmedia.net/unifiedwindow/widgetSDK.min.js></script>
+
+  <!-- Engagement Window Widget initialization -->
+  <script type="text/javascript">
+    // let lpWidgetSDK;
+    const widgetSDKAPI = lpTag.LPWidgetSDK.API;
+
+    window.addEventListener('load', function () {
+      const bindingEvent = [widgetSDKAPI.events.CONVERSATION_INFO, widgetSDKAPI.events.MESSAGES]
+      const opts = { bind: {} };
+
+      bindingEvent.forEach(function (eventName) {
+        opts.bind[eventName] = { func: _onEvent, context: this };
+      });
+
+      lpWidgetSDK = lpTag.LPWidgetSDK.init(opts);
+    }.bind(this));
+
+    function _onEvent(eventData) {
+      console.log('Got an event', eventData);
+      if (eventData && widgetSDKAPI.events.MESSAGES === eventData.type) {
+        const content = eventData.data.content;
+        console.log('MESSAGES data: ', eventData);
+        if (content.indexOf('disposeWidget') > -1) {
+          disposeWidget();
+        }
+      } else if (eventData && widgetSDKAPI.events.CONVERSATION_INFO === eventData.type) {
+        console.log('CONVERSATION_INFO data: ', eventData);
+      }
+      sendNotification('Event received!');
+    }
+
+    function sendNotification(text) {
+      if (typeof text === 'string') {
+        lpWidgetSDK.notify({ content: text }, function (err) {
+          if (err) {
+            console.log('Error on sending notification from widget');
+          }
+        });
+      }
+    }
+
+    function disposeWidget() {
+      lpWidgetSDK.dispose(function (data) {
+        console.log('Widget disposal failed!');
+      });
     }
   </script>
-  <!-- END LivePerson Monitor. -->
 
+  <!-- Custom JS to handle page actions -->
   <script type="text/javascript">
     const abcRedirectUri = 'https://bcrw.apple.com/urn:biz:';
     const gbmRedirectUri = 'https://business.google.com/message?args=';
+    // lpWidgetSdk = lpTag.LPWidgetSDK.init();
 
     // Post to Web View API
     async function postData(url = '', auth, data = {}) {
@@ -51,13 +126,13 @@
       const userId = queryParams.get('userId');
       const conversationId = queryParams.get('convId');
       const botId = queryParams.get('botId');
-      const abcBID = urlParams.get('abcBID');
-      const gbmId = urlParams.get('gbmId');
+      const abcBID = queryParams.get('abcBID');
+      const gbmId = queryParams.get('gbmId');
 
       // Get data from form
       const code = document.querySelector('input[id="captchaCode"]').value;
-      
-      // encode auth string
+
+      // Encode auth string
       const authString = `${conversationId} || ${botId}`;
       const auth = await sha256(authString);
 
@@ -70,12 +145,18 @@
       });
 
       if (abcBID) {
+        // Redirect to ABC
         window.location.href = `${abcRedirectUri}${abcBID}`;
-      } else if (gbmId) {
-        window.location.href = `${gbmRedirectUri}${gbmId}`;
-      } else {
-        window.close();
+        return;
       }
+
+      if (gbmId) {
+        // Redirect to GBM
+        window.location.href = `${gbmRedirectUri}${gbmId}`;
+        return;
+      }
+
+      disposeWidget();
     }
 
     async function onBodyLoad() {
@@ -102,7 +183,8 @@
     <h3>Enter the code below</h3>
   </div>
   <div id="captchaImageContainer" style="display: flex; flex-wrap: wrap; justify-content: left;">
-    <button style="border: none; background-color: inherit; display: inline-block; font-size:200%;" onclick="reloadCaptchaImage();">&#8635;</button>
+    <button style="border: none; background-color: inherit; display: inline-block; font-size:200%;"
+      onclick="reloadCaptchaImage();">&#8635;</button>
   </div>
   <br>
   <form onsubmit="submitForm(); return false;">
