@@ -83,6 +83,16 @@
     }
 
     function disposeWidget() {
+      // Direct button click (workaround).
+      // There is no official JS method to hide slideout window.
+      // This won't work if title of the hide button be changed!
+      const slideoutCloseButton = document.querySelector('[title="Minimize widget"]');
+      if (slideoutCloseButton && typeof slideoutCloseButton.click === 'function') {
+        slideoutCloseButton.click();
+      } else {
+        console.warn('Cannot find slideout hide button!')
+      }
+
       lpWidgetSDK.dispose(function (data) {
         console.log('Widget disposal failed!');
       });
