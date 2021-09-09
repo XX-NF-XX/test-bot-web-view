@@ -18,12 +18,12 @@
   <script type="text/javascript">
     window.addEventListener("message", (event) => {
       // Do we trust the sender of this message?  (might be different from what we originally opened, for example).
-      const iframeHostname = (window.location.hostname.includes('stage.') ? 'stage.auth.optimum.net' : 'auth.optimum.net');
-      if (event.hostname !== iframeHostname) return;
+      const iframeOrigin = (window.location.hostname.includes('stage.') ? 'https://stage.auth.optimum.net' : 'https://auth.optimum.net');
+      if (!event.origin.includes(iframeOrigin)) return;
 
       console.debug(event);
 
-      if (event.data === 'Close slideout') {
+      if (event.data === 'CLOSE_SLIDEOUT') {
         let slideoutCloseButton;
         try {
           slideoutCloseButton = document.querySelector('[title="Minimize widget"]');
@@ -39,8 +39,6 @@
 
         slideoutCloseButton.click();
       }
-      // event.source is popup
-      // event.data is "hi there yourself!  the secret response is: rheeeeet!"
     }, false);
   </script>
 </head>
