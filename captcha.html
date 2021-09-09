@@ -23,7 +23,7 @@
         return;
       }
 
-      globalWindow.postMessage('CLOSE_SLIDEOUT',document.location.hostname);
+      globalWindow.postMessage('CLOSE_SLIDEOUT', globalWindow.origin);
 
       let slideoutCloseButton;
       try {

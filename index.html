@@ -18,7 +18,8 @@
   <script type="text/javascript">
     window.addEventListener("message", (event) => {
       // Do we trust the sender of this message?  (might be different from what we originally opened, for example).
-      const iframeOrigin = (window.location.hostname.includes('stage.') ? 'https://stage.auth.optimum.net' : 'https://auth.optimum.net');
+      // const iframeOrigin = (window.location.hostname.includes('stage.') ? 'https://stage.auth.optimum.net' : 'https://auth.optimum.net');
+      const iframeOrigin = 'https://vt-lp.github.io';
       if (!event.origin.includes(iframeOrigin)) return;
 
       console.debug(event);
