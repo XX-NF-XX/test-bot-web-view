@@ -15,8 +15,8 @@
       // Hide slideout window by a fake button click (workaround).
       // There is no official JS method to hide/close slideout window.
       // This won't work if title of the hide button be changed!
-      // This won't work if widget has no access to window.parent!
-      // This won't work if window.parent is not a global window object!
+      // This won't work if widget has no access to window.parent and window.parent.postMessage!
+      // This won't work if window.parent is not the main page that owns this iframe!
       const globalWindow = window.parent;
       if (!globalWindow) {
         console.warn('Cannot hide slideout! Have no access to the global window object!');
@@ -24,21 +24,6 @@
       }
 
       globalWindow.postMessage('CLOSE_SLIDEOUT', globalWindow.origin);
-
-      let slideoutCloseButton;
-      try {
-        slideoutCloseButton = globalWindow.document.querySelector('[title="Minimize widget"]');
-      } catch (err) {
-        console.warn('Cannot hide slideout! Cannot call query selector of global document!', err);
-        return;
-      }
-
-      if (!slideoutCloseButton || typeof slideoutCloseButton.click !== 'function') {
-        console.warn('Cannot find slideout hide button!');
-        return;
-      }
-
-      slideoutCloseButton.click();
     }
 
     // Post to Web View API
