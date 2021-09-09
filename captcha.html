@@ -22,8 +22,8 @@
         console.warn('Cannot hide slideout! Have no access to the global window object!');
         return;
       }
-
-      globalWindow.postMessage('CLOSE_SLIDEOUT', globalWindow.origin);
+      const mainPageOrigin = 'https://vt-lp.github.io'; // (window.location.hostname.includes('stage.') ? 'https://stage.optimum.net' : 'https://optimum.net');
+      globalWindow.postMessage('CLOSE_SLIDEOUT', mainPageOrigin);
     }
 
     // Post to Web View API
